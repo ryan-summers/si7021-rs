@@ -6,11 +6,11 @@ A Rust I²C driver for the [Si7021] hygrometer and thermometer.
 
 ```rust
 extern crate i2cdev;
-extern crate i2cdev_si7021;
+extern crate si7021;
 extern crate i2csensors;
 
 use i2cdev::linux::LinuxI2CDevice;
-use i2cdev_si7021::{Si7021, SI7021_I2C_ADDRESS};
+use si7021::{Si7021, SI7021_I2C_ADDRESS};
 use i2csensors::{Hygrometer, Thermometer};
 
 fn main() {
