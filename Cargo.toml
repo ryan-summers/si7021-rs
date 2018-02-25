@@ -1,0 +1,12 @@
+[package]
+name = "si7021"
+version = "0.0.1"
+authors = ["Klemens Schölhorn <klemens@schoelhorn.eu>"]
+description = "I2C driver for the Si7021 hygrometer and thermometer"
+license = "MIT/Apache-2.0"
+repository = "https://github.com/klemens/si7021-rs"
+
+[dependencies]
+byteorder = "1"
+i2cdev = "0.3.2"
+i2csensors = "0.1.3"
