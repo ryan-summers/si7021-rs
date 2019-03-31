@@ -11,5 +11,5 @@ license = "Apache-2.0/MIT"
 
 [dependencies]
 byteorder = "1"
-i2cdev = "0.3.2"
+i2cdev = "0.4.1"
 i2csensors = "0.1.3"
