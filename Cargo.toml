@@ -1,6 +1,6 @@
 [package]
 name = "si7021"
-version = "0.1.0"
+version = "0.2.0"
 authors = ["Klemens Schölhorn <klemens@schoelhorn.eu>"]
 description = "I2C driver for the Si7021 hygrometer and thermometer"
 documentation = "https://docs.rs/si7021"
