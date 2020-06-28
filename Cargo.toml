@@ -1,5 +1,6 @@
 [package]
 name = "si7021"
+edition = "2018"
 version = "0.2.0"
 authors = ["Klemens Schölhorn <klemens@schoelhorn.eu>"]
 description = "I2C driver for the Si7021 hygrometer and thermometer"
@@ -11,5 +12,4 @@ license = "Apache-2.0/MIT"
 
 [dependencies]
 byteorder = "1"
-i2cdev = "0.4.1"
-i2csensors = "0.1.3"
+embedded-hal = "0.2.3"

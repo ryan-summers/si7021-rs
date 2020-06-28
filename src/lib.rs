@@ -2,16 +2,11 @@
 //!
 //! [Si7021]: https://www.silabs.com/documents/public/data-sheets/Si7021-A20.pdf
 
-extern crate byteorder;
-extern crate i2cdev;
-extern crate i2csensors;
-
 use byteorder::{BigEndian, ByteOrder};
-use i2cdev::core::I2CDevice;
-use i2csensors::{Hygrometer, Thermometer};
+use embedded_hal::blocking::i2c::WriteRead;
 
 /// Standard I²C address of the Si7021: `0x40`
-pub const SI7021_I2C_ADDRESS: u16 = 0x40;
+pub const SI7021_I2C_ADDRESS: u8 = 0x40;
 
 // Some of the supported commands
 // currently missing: accuracy control, heater, reset, async interface
@@ -26,7 +21,7 @@ pub struct Si7021<T> {
 }
 
 impl<T> Si7021<T>
-    where T: I2CDevice
+    where T: WriteRead
 {
     /// Create a new instance wrapping the given `I2CDevice`.
     pub fn new(device: T) -> Si7021<T> {
@@ -45,31 +40,17 @@ impl<T> Si7021<T>
 
     fn read_word(&mut self, command: u8) -> Result<u16, T::Error> {
         let mut buf = [0u8; 2];
-        self.device.write(&[command])?;
-        self.device.read(&mut buf)?;
-
+        self.device.write_read(SI7021_I2C_ADDRESS, &[command], &mut buf)?;
         Ok(BigEndian::read_u16(&buf))
     }
-}
 
-impl<T> Hygrometer for Si7021<T>
-    where T: I2CDevice
-{
-    type Error = T::Error;
-
-    fn relative_humidity(&mut self) -> Result<f32, Self::Error> {
+    pub fn relative_humidity(&mut self) -> Result<f32, T::Error> {
         let raw_humidity = self.read_word(MEASURE_RELATIVE_HUMIDITY)?;
 
         Ok(calculate_relative_humidity(raw_humidity))
     }
-}
 
-impl<T> Thermometer for Si7021<T>
-    where T: I2CDevice
-{
-    type Error = T::Error;
-
-    fn temperature_celsius(&mut self) -> Result<f32, Self::Error> {
+    pub fn temperature_celsius(&mut self) -> Result<f32, T::Error> {
         let raw_temperature = self.read_word(MEASURE_TEMPERATURE)?;
 
         Ok(calculate_temperature(raw_temperature))
