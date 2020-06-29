@@ -1,3 +1,5 @@
+#![no_std]
+
 //! I²C driver for the Silicon Labs [Si7021] hygrometer and thermometer.
 //!
 //! [Si7021]: https://www.silabs.com/documents/public/data-sheets/Si7021-A20.pdf
