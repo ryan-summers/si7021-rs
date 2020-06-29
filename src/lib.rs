@@ -2,7 +2,6 @@
 //!
 //! [Si7021]: https://www.silabs.com/documents/public/data-sheets/Si7021-A20.pdf
 
-use byteorder::{BigEndian, ByteOrder};
 use embedded_hal::blocking::i2c::WriteRead;
 
 /// Standard I²C address of the Si7021: `0x40`
@@ -41,7 +40,7 @@ impl<T> Si7021<T>
     fn read_word(&mut self, command: u8) -> Result<u16, T::Error> {
         let mut buf = [0u8; 2];
         self.device.write_read(SI7021_I2C_ADDRESS, &[command], &mut buf)?;
-        Ok(BigEndian::read_u16(&buf))
+        Ok(u16::from_be_bytes(buf))
     }
 
     pub fn relative_humidity(&mut self) -> Result<f32, T::Error> {

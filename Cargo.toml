@@ -11,5 +11,4 @@ categories = ["embedded", "hardware-support"]
 license = "Apache-2.0/MIT"
 
 [dependencies]
-byteorder = "1"
 embedded-hal = "0.2.3"
