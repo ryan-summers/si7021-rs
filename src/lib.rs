@@ -4,8 +4,6 @@
 //!
 //! [Si7021]: https://www.silabs.com/documents/public/data-sheets/Si7021-A20.pdf
 
-use embedded_hal::blocking::i2c::WriteRead;
-
 /// Standard I²C address of the Si7021: `0x40`
 pub const SI7021_I2C_ADDRESS: u8 = 0x40;
 
@@ -22,13 +20,12 @@ pub struct Si7021<T> {
 }
 
 impl<T> Si7021<T>
-    where T: WriteRead
+where
+    T: embedded_hal::i2c::I2c,
 {
     /// Create a new instance wrapping the given `I2CDevice`.
     pub fn new(device: T) -> Si7021<T> {
-        Si7021 {
-            device,
-        }
+        Si7021 { device }
     }
 
     /// Every humidity measurement measures the temperature first. Use this
@@ -41,7 +38,8 @@ impl<T> Si7021<T>
 
     fn read_word(&mut self, command: u8) -> Result<u16, T::Error> {
         let mut buf = [0u8; 2];
-        self.device.write_read(SI7021_I2C_ADDRESS, &[command], &mut buf)?;
+        self.device
+            .write_read(SI7021_I2C_ADDRESS, &[command], &mut buf)?;
         Ok(u16::from_be_bytes(buf))
     }
 
@@ -60,7 +58,7 @@ impl<T> Si7021<T>
 
 fn calculate_relative_humidity(raw_humidity: u16) -> f32 {
     let relative_humidity = 125.0 * raw_humidity as f32 / 65536.0 - 6.0;
-    relative_humidity.max(0.0).min(100.0) // clamp as per datasheet
+    relative_humidity.clamp(0.0, 100.0) // clamp as per datasheet
 }
 
 fn calculate_temperature(raw_temperature: u16) -> f32 {

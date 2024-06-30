@@ -7,8 +7,9 @@ description = "I2C driver for the Si7021 hygrometer and thermometer"
 documentation = "https://docs.rs/si7021"
 repository = "https://github.com/klemens/si7021-rs"
 readme = "README.md"
-categories = ["embedded", "hardware-support"]
+categories = ["embedded", "hardware-support", "no-std"]
+keywords = ["si7021", "embedded-hal-driver", "driver", "thermometer", "hygrometer"]
 license = "Apache-2.0/MIT"
 
 [dependencies]
-embedded-hal = "0.2.3"
+embedded-hal = "1"
